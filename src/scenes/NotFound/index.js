@@ -1,14 +1,15 @@
 import React from 'react'
-import MainMenu from '../../components/MainMenu';
 
-import { Container } from 'semantic-ui-react'
+import MainMenu from '../../components/MainMenu';
+import CustomContainer from "../../components/CustomContainer";
+
 
 const Home = () => (
-    <Container>
+    <CustomContainer>
         <MainMenu/>
         <hr />
         <h1>Page not found</h1>
-    </Container>
+    </CustomContainer>
 );
 
 export default Home

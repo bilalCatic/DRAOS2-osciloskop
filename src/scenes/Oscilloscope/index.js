@@ -1,10 +1,11 @@
 import React from 'react'
 import MainMenu from '../../components/MainMenu';
+import CustomContainer from "../../components/CustomContainer";
 
-import { Container, Segment } from 'semantic-ui-react'
+import { Segment } from 'semantic-ui-react'
 
 const Oscilloscope = () => (
-    <Container>
+    <CustomContainer>
         <MainMenu/>
         <br />
         <Segment>
@@ -19,7 +20,7 @@ const Oscilloscope = () => (
             <br />
             Nešto još malo oko OSCILOSKOPA
         </Segment>
-    </Container>
+    </CustomContainer>
 );
 
 export default Oscilloscope;

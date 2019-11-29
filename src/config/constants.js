@@ -26,7 +26,9 @@ const MENU_ITEMS = [
         component: Help
     },
 ];
+const CONTAINER_SIZE = 90; // Container size / width in percentage
 
 export {
-    MENU_ITEMS
+    MENU_ITEMS,
+    CONTAINER_SIZE
 }

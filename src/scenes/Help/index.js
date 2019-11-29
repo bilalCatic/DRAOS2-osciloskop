@@ -1,10 +1,11 @@
 import React from 'react'
-import MainMenu from '../../components/MainMenu';
+import { Segment } from 'semantic-ui-react'
 
-import { Container, Segment } from 'semantic-ui-react'
+import MainMenu from '../../components/MainMenu';
+import CustomContainer from "../../components/CustomContainer";
 
 const Help = () => (
-    <Container>
+    <CustomContainer>
         <MainMenu/>
         <br />
         <Segment>
@@ -19,7 +20,7 @@ const Help = () => (
             <br />
             Nešto još malo oko HELPA
         </Segment>
-    </Container>
+    </CustomContainer>
 );
 
 export default Help
