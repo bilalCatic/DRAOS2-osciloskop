@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import NotFound from './scenes/NotFound';
+import { MENU_ITEMS } from './config/constants';
+
+class App extends Component {
+    render() {
+        document.title='Sima Space CRM';
+        return (
+            <Router>
+                <Switch>
+                    {
+                        MENU_ITEMS.map(mainMenuItem =>
+                            <Route key={mainMenuItem.key}
+                                   exact
+                                   path={mainMenuItem.url}
+                                   component={mainMenuItem.component}
+                            />)
+                    }
+                    <Route component={NotFound} />
+                </Switch>
+            </Router>
+        );
+    }
 }
-
 export default App;
