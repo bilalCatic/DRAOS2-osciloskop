@@ -1,6 +1,6 @@
 import Home from '../scenes/Home';
 import Help from '../scenes/Help';
-import Oscilloscope from "../scenes/Oscilloscope";
+import OscilloscopeScene from "../scenes/OscilloscopeScene";
 
 const MENU_ITEMS = [
     {
@@ -16,7 +16,7 @@ const MENU_ITEMS = [
         name: 'Oscilloscope',
         showInMenu: true,
         url: '/oscilloscope',
-        component: Oscilloscope
+        component: OscilloscopeScene
     },
     {
         key: 'help',

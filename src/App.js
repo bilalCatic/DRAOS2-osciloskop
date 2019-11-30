@@ -7,7 +7,7 @@ import { MENU_ITEMS } from './config/constants';
 
 class App extends Component {
     render() {
-        document.title='Sima Space CRM';
+        document.title='Experimental Oscilloscope App';
         return (
             <Router>
                 <Switch>
