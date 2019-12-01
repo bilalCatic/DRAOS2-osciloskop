@@ -20,6 +20,7 @@ class Oscilloscope extends PureComponent {
             channel2Data: new Array(WINDOW_SIZE).fill(0),
             channel1Active: true,
             channel2Active: true,
+            timeActive: true,
             channel1: {
                 inputDataGenerator: this.functionNextValue(Math.sin, DELTA_T, W),
             },
@@ -61,7 +62,9 @@ class Oscilloscope extends PureComponent {
                         />
                     </Grid.Column>
                     <Grid.Column width={8}>
-                        <HorizontalControls />
+                        <HorizontalControls
+                            onTimeActiveChange={this.timeActiveChanged}
+                        />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -83,7 +86,10 @@ class Oscilloscope extends PureComponent {
     }
 
     shiftChannelValues() {
-        const { channel1Data, channel2Data, channel1, channel2 } = this.state;
+        const { channel1Data, channel2Data, channel1, channel2, timeActive } = this.state;
+        if (!timeActive){
+            return;
+        }
         const inputDataGenerator1 = channel1.inputDataGenerator;
         const inputDataGenerator2 = channel2.inputDataGenerator;
 
@@ -112,6 +118,10 @@ class Oscilloscope extends PureComponent {
     channel2ActiveChanged = (active) => {
         this.setState({channel2Active: active});
     };
+
+    timeActiveChanged = (timeActive) => {
+        this.setState({timeActive});
+    }
 }
 
 export default Oscilloscope;

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import {Accordion, Grid, Icon} from "semantic-ui-react";
+import {Accordion, Grid, Icon, Button} from "semantic-ui-react";
 import {Knob} from "react-rotary-knob";
 import {s17} from "react-rotary-knob-skin-pack";
 
@@ -9,12 +9,13 @@ class HorizontalControls extends PureComponent {
         super(props);
 
         this.state = {
-            active: true
+            active: true,
+            timeActive: true,
         }
     }
 
     render(){
-        const { active } = this.state;
+        const { active, timeActive } = this.state;
 
         const knobStyle = {
             width: "150px",
@@ -39,6 +40,11 @@ class HorizontalControls extends PureComponent {
                     <Grid>
                         <Grid.Row>
                             <Grid.Column>
+                                <Button color={timeActive ? 'green' : 'red'} onClick={this.toggleTimeActiveStatus}>Run / Stop</Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
                                 Time
                                 <Knob style={knobStyle} skin={s17}/>
                             </Grid.Column>
@@ -59,6 +65,14 @@ class HorizontalControls extends PureComponent {
 
     toggleActiveStatus = () => {
         this.setState({active: !this.state.active});
+    };
+
+    toggleTimeActiveStatus = () => {
+        const { timeActive } = this.state;
+        const newTimeActive = !timeActive;
+
+        this.setState({timeActive: newTimeActive});
+        this.props.onTimeActiveChange(newTimeActive);
     }
 }
 
