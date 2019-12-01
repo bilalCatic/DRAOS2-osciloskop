@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Grid } from 'semantic-ui-react';
+import {Grid} from 'semantic-ui-react';
 
 import Screen from "./components/Screen";
+import VerticalControls from "./components/VerticalControls";
+import HorizontalControls from "./components/HorizontalControls";
 
 const W = 2*Math.PI;
 const DELTA_T = 0.01; // 10ms
@@ -16,6 +18,8 @@ class Oscilloscope extends PureComponent {
         this.state = {
             channel1Data: new Array(WINDOW_SIZE).fill(0),
             channel2Data: new Array(WINDOW_SIZE).fill(0),
+            channel1Active: true,
+            channel2Active: true,
             channel1: {
                 inputDataGenerator: this.functionNextValue(Math.sin, DELTA_T, W),
             },
@@ -37,15 +41,30 @@ class Oscilloscope extends PureComponent {
     }
 
     render() {
-        const { channel1Data, channel2Data } = this.state;
+        const { channel1Data, channel2Data, channel1Active, channel2Active } = this.state;
 
         return (
-            <Grid.Row>
-                <Screen
-                    channel1Data={channel1Data}
-                    channel2Data={channel2Data}
-                />
-            </Grid.Row>
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column>
+                        <Screen
+                            channel1Data={channel1Active ? channel1Data : null}
+                            channel2Data={channel2Active ? channel2Data : null}
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={8}>
+                        <VerticalControls
+                            onChannel1ActiveChange={this.channel1ActiveChanged}
+                            onChannel2ActiveChange={this.channel2ActiveChanged}
+                        />
+                    </Grid.Column>
+                    <Grid.Column width={8}>
+                        <HorizontalControls />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     }
 
@@ -82,6 +101,17 @@ class Oscilloscope extends PureComponent {
 
         this.setState({channel1Data: newChannel1Data, channel2Data: newChannel2Data});
     }
+
+
+    //****** CHILDREN COMPONENT CALLBACKS ******* ///
+
+    channel1ActiveChanged = (active) => {
+        this.setState({channel1Active: active});
+    };
+
+    channel2ActiveChanged = (active) => {
+        this.setState({channel2Active: active});
+    };
 }
 
 export default Oscilloscope;

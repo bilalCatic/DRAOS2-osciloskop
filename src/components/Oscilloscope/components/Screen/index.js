@@ -69,7 +69,6 @@ class Screen extends PureComponent {
                     show: false
                 }
             },
-            startIndex: 0,
             intervalHandle: null,
         }
     }
@@ -77,9 +76,15 @@ class Screen extends PureComponent {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const { channel1Data: data1, channel2Data: data2 } = this.props;
 
-        if (Array.isArray(data1) && Array.isArray(data2)){
-            ApexCharts.exec('realtime', 'updateSeries', [{data: data1}, {data: data2}]);
+        const seriesData = [];
+        if (Array.isArray(data1)){
+            seriesData.push({data: data1});
         }
+        if (Array.isArray(data2)){
+            seriesData.push({data: data2});
+        }
+
+        ApexCharts.exec('realtime', 'updateSeries', seriesData);
     }
 
     render() {
