@@ -3,6 +3,10 @@ import {Accordion, Grid, Icon, Button} from "semantic-ui-react";
 import {Knob} from "react-rotary-knob";
 import {s17} from "react-rotary-knob-skin-pack";
 
+const timeKnobOptions = {
+    min: 0.1,
+    max: 5,
+};
 
 class HorizontalControls extends PureComponent {
     constructor(props){
@@ -11,11 +15,12 @@ class HorizontalControls extends PureComponent {
         this.state = {
             active: true,
             timeActive: true,
+            timeScale: 1,
         }
     }
 
     render(){
-        const { active, timeActive } = this.state;
+        const { active, timeActive, timeScale } = this.state;
 
         const knobStyle = {
             width: "150px",
@@ -46,7 +51,14 @@ class HorizontalControls extends PureComponent {
                         <Grid.Row>
                             <Grid.Column>
                                 Time
-                                <Knob style={knobStyle} skin={s17}/>
+                                <Knob
+                                    style={knobStyle}
+                                    skin={s17}
+                                    onChange={this.changeTimeScale}
+                                    min={timeKnobOptions.min}
+                                    max={timeKnobOptions.max}
+                                    value={timeScale}
+                                />
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -73,7 +85,12 @@ class HorizontalControls extends PureComponent {
 
         this.setState({timeActive: newTimeActive});
         this.props.onTimeActiveChange(newTimeActive);
-    }
+    };
+
+    changeTimeScale = (timeScale) => {
+        this.setState({timeScale});
+        this.props.onTimeScaleChange(timeScale);
+    };
 }
 
 export default HorizontalControls;
