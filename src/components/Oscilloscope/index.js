@@ -28,6 +28,12 @@ class Oscilloscope extends PureComponent {
                 inputDataGenerator: this.functionNextValue(Math.cos, DELTA_T, W),
             },
             intervalHandler: null,
+            timeScale: 1,
+            timeDelay: 0,
+            channel1Scale: 1,
+            channel1VerticalOffset: 0,
+            channel2Scale: 1,
+            channel2VerticalOffset: 0
         }
     }
 
@@ -59,11 +65,14 @@ class Oscilloscope extends PureComponent {
                         <VerticalControls
                             onChannel1ActiveChange={this.channel1ActiveChanged}
                             onChannel2ActiveChange={this.channel2ActiveChanged}
+                            onChannel1VerticalOffsetChange={this.channel1VerticalOffsetChanged}
+                            onChannel2VerticalOffsetChange={this.channel2VerticalOffsetChanged}
                         />
                     </Grid.Column>
                     <Grid.Column width={8}>
                         <HorizontalControls
                             onTimeActiveChange={this.timeActiveChanged}
+                            onTimeScaleChange={this.timeScaleChanged}
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -81,33 +90,44 @@ class Oscilloscope extends PureComponent {
         let time = startTime;
         while (true){
             yield mathFunction(argument*time);
-            time += timeDelta;
+
+            const { timeScale } = this.state;
+            const newTimeDelta = timeDelta*timeScale;
+            time += newTimeDelta;
         }
     }
 
     shiftChannelValues() {
-        const { channel1Data, channel2Data, channel1, channel2, timeActive } = this.state;
+        const {
+            channel1Data,
+            channel2Data,
+            channel1,
+            channel2,
+            timeActive,
+            channel1VerticalOffset,
+            channel2VerticalOffset,
+        } = this.state;
+
         if (!timeActive){
             return;
         }
         const inputDataGenerator1 = channel1.inputDataGenerator;
         const inputDataGenerator2 = channel2.inputDataGenerator;
 
-        const nextData1 = inputDataGenerator1.next().value;
-        const nextData2 = inputDataGenerator2.next().value;
+        const nextData1 = inputDataGenerator1.next().value + channel1VerticalOffset;
+        const nextData2 = inputDataGenerator2.next().value + channel2VerticalOffset;
 
         let newChannel1Data = [];
         let newChannel2Data = [];
-        if (nextData1 !== undefined){
+        if (nextData1 !== undefined && !isNaN(nextData1)){
             newChannel1Data = [...channel1Data.slice(1), nextData1];
         }
-        if (nextData2 !== undefined){
+        if (nextData2 !== undefined && !isNaN(nextData2)){
             newChannel2Data = [...channel2Data.slice(1), nextData2];
         }
 
         this.setState({channel1Data: newChannel1Data, channel2Data: newChannel2Data});
     }
-
 
     //****** CHILDREN COMPONENT CALLBACKS ******* ///
 
@@ -121,6 +141,22 @@ class Oscilloscope extends PureComponent {
 
     timeActiveChanged = (timeActive) => {
         this.setState({timeActive});
+    };
+
+    timeScaleChanged = (timeScale) => {
+      this.setState({timeScale});
+    };
+
+    channel1VerticalOffsetChanged = (channel1VerticalOffset) => {
+        const { channel1VerticalOffset: oldChannel1VerticalOffset, channel1Data } = this.state;
+        const newChannel1Data = channel1Data.map(pointValue => pointValue - oldChannel1VerticalOffset + channel1VerticalOffset);
+        this.setState({channel1VerticalOffset, channel1Data: newChannel1Data});
+    };
+
+    channel2VerticalOffsetChanged = (channel2VerticalOffset) => {
+        const { channel2VerticalOffset: oldChannel2VerticalOffset, channel2Data } = this.state;
+        const newChannel2Data = channel2Data.map(pointValue => pointValue - oldChannel2VerticalOffset + channel2VerticalOffset);
+        this.setState({channel2VerticalOffset, channel2Data: newChannel2Data});
     }
 }
 
