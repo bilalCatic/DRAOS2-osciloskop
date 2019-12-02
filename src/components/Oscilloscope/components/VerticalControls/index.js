@@ -3,6 +3,10 @@ import {Accordion, Icon, Grid, Button} from "semantic-ui-react";
 import { Knob } from "react-rotary-knob";
 import { s17 } from "react-rotary-knob-skin-pack";
 
+const verticalOffsetKnobOptions = {
+    min: -5,
+    max: 5,
+};
 
 class VerticalControls extends PureComponent {
     constructor(props){
@@ -12,11 +16,19 @@ class VerticalControls extends PureComponent {
             active: true,
             channel1Active: true,
             channel2Active: true,
+            channel1VerticalOffset: 0,
+            channel2VerticalOffset: 0,
         }
     }
 
     render(){
-        const { active, channel1Active, channel2Active } = this.state;
+        const {
+            active,
+            channel1Active,
+            channel2Active,
+            channel1VerticalOffset,
+            channel2VerticalOffset
+        } = this.state;
 
         const knobStyle = {
             width: "150px",
@@ -64,11 +76,25 @@ class VerticalControls extends PureComponent {
                         <Grid.Row>
                             <Grid.Column width={8}>
                                 Position
-                                <Knob style={knobStyleSmall} skin={s17}/>
+                                <Knob
+                                    style={knobStyleSmall}
+                                    skin={s17}
+                                    min={verticalOffsetKnobOptions.min}
+                                    max={verticalOffsetKnobOptions.max}
+                                    value={channel1VerticalOffset}
+                                    onChange={this.changeChannel1VerticalOffset}
+                                />
                             </Grid.Column>
                             <Grid.Column width={8}>
                                 Position
-                                <Knob style={knobStyleSmall} skin={s17}/>
+                                <Knob
+                                    style={knobStyleSmall}
+                                    skin={s17}
+                                    min={verticalOffsetKnobOptions.min}
+                                    max={verticalOffsetKnobOptions.max}
+                                    value={channel2VerticalOffset}
+                                    onChange={this.changeChannel2VerticalOffset}
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -95,6 +121,16 @@ class VerticalControls extends PureComponent {
         const newChannel2ActiveState = !channel2Active;
         this.setState({channel2Active: newChannel2ActiveState});
         this.props.onChannel2ActiveChange(newChannel2ActiveState);
+    };
+
+    changeChannel1VerticalOffset = (channel1VerticalOffset) => {
+        this.setState({channel1VerticalOffset});
+        this.props.onChannel1VerticalOffsetChange(channel1VerticalOffset);
+    };
+
+    changeChannel2VerticalOffset = (channel2VerticalOffset) => {
+        this.setState({channel2VerticalOffset});
+        this.props.onChannel2VerticalOffsetChange(channel2VerticalOffset);
     };
 }
 
