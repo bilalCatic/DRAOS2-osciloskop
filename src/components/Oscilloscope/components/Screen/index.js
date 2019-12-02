@@ -58,8 +58,8 @@ class Screen extends PureComponent {
                 },
                 yaxis: {
                     type: 'numeric',
-                    min: -1,
-                    max: 1,
+                    min: -5,
+                    max: 5,
                     labels: {
                         show: false
                     },
