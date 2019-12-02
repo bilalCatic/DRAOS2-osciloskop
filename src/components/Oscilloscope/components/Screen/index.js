@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react';
 import ApexCharts from 'apexcharts';
 import ReactApexChart from 'react-apexcharts';
 
+const DEFAULT_X_MIN = 0;
+const DEFAULT_X_MAX = 100;
+
 class Screen extends PureComponent {
     constructor(props) {
         super(props);
@@ -55,6 +58,9 @@ class Screen extends PureComponent {
                         show: false
                     },
                     tickAmount: 18,
+                    min: DEFAULT_X_MIN,
+                    max: DEFAULT_X_MAX,
+                    range: this.props.range
                 },
                 yaxis: {
                     type: 'numeric',
@@ -74,7 +80,7 @@ class Screen extends PureComponent {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const { channel1Data: data1, channel2Data: data2 } = this.props;
+        const { channel1Data: data1, channel2Data: data2, timeOffset } = this.props;
 
         const seriesData = [];
         if (Array.isArray(data1)){
@@ -85,6 +91,11 @@ class Screen extends PureComponent {
         }
 
         ApexCharts.exec('realtime', 'updateSeries', seriesData);
+
+        const chartOptions = this.state.options;
+        chartOptions.xaxis.min = DEFAULT_X_MIN - timeOffset;
+        chartOptions.xaxis.max = DEFAULT_X_MAX - timeOffset;
+        this.setState({options: chartOptions});
     }
 
     render() {

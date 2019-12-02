@@ -8,6 +8,11 @@ const timeKnobOptions = {
     max: 5,
 };
 
+const timeOffsetKnobOptions = {
+    min: -50,
+    max: 50,
+};
+
 class HorizontalControls extends PureComponent {
     constructor(props){
         super(props);
@@ -15,12 +20,12 @@ class HorizontalControls extends PureComponent {
         this.state = {
             active: true,
             timeActive: true,
-            timeScale: 1,
+            timeOffset: 0,
         }
     }
 
     render(){
-        const { active, timeActive, timeScale } = this.state;
+        const { active, timeActive, timeScale, timeOffset } = this.state;
 
         const knobStyle = {
             width: "150px",
@@ -64,7 +69,14 @@ class HorizontalControls extends PureComponent {
                         <Grid.Row>
                             <Grid.Column>
                                 Position
-                                <Knob style={knobStyleSmall} skin={s17}/>
+                                <Knob
+                                    style={knobStyleSmall}
+                                    skin={s17}
+                                    min={timeOffsetKnobOptions.min}
+                                    max={timeOffsetKnobOptions.max}
+                                    value={timeOffset}
+                                    onChange={this.changeTimeOffset}
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -91,6 +103,11 @@ class HorizontalControls extends PureComponent {
         this.setState({timeScale});
         this.props.onTimeScaleChange(timeScale);
     };
+
+    changeTimeOffset = (timeOffset) => {
+        this.setState({timeOffset});
+        this.props.onTimeOffsetChange(timeOffset);
+    }
 }
 
 export default HorizontalControls;

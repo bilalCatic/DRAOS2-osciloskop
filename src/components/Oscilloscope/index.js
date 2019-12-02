@@ -29,7 +29,7 @@ class Oscilloscope extends PureComponent {
             },
             intervalHandler: null,
             timeScale: 1,
-            timeDelay: 0,
+            timeOffset: 0,
             channel1Scale: 1,
             channel1VerticalOffset: 0,
             channel2Scale: 1,
@@ -48,7 +48,7 @@ class Oscilloscope extends PureComponent {
     }
 
     render() {
-        const { channel1Data, channel2Data, channel1Active, channel2Active } = this.state;
+        const { channel1Data, channel2Data, channel1Active, channel2Active, timeOffset } = this.state;
 
         return (
             <Grid>
@@ -57,6 +57,8 @@ class Oscilloscope extends PureComponent {
                         <Screen
                             channel1Data={channel1Active ? channel1Data : null}
                             channel2Data={channel2Active ? channel2Data : null}
+                            timeOffset={timeOffset}
+                            range={WINDOW_SIZE}
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -75,6 +77,7 @@ class Oscilloscope extends PureComponent {
                         <HorizontalControls
                             onTimeActiveChange={this.timeActiveChanged}
                             onTimeScaleChange={this.timeScaleChanged}
+                            onTimeOffsetChange={this.timeOffsetChanged}
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -149,6 +152,10 @@ class Oscilloscope extends PureComponent {
 
     timeScaleChanged = (timeScale) => {
       this.setState({timeScale});
+    };
+
+    timeOffsetChanged = (timeOffset) => {
+        this.setState({timeOffset});
     };
 
     channel1VerticalOffsetChanged = (channel1VerticalOffset) => {
