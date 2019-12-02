@@ -65,6 +65,8 @@ class Oscilloscope extends PureComponent {
                         <VerticalControls
                             onChannel1ActiveChange={this.channel1ActiveChanged}
                             onChannel2ActiveChange={this.channel2ActiveChanged}
+                            onChannel1ScaleChange={this.channel1ScaleChanged}
+                            onChannel2ScaleChange={this.channel2ScaleChanged}
                             onChannel1VerticalOffsetChange={this.channel1VerticalOffsetChanged}
                             onChannel2VerticalOffsetChange={this.channel2VerticalOffsetChanged}
                         />
@@ -106,6 +108,8 @@ class Oscilloscope extends PureComponent {
             timeActive,
             channel1VerticalOffset,
             channel2VerticalOffset,
+            channel1Scale,
+            channel2Scale
         } = this.state;
 
         if (!timeActive){
@@ -114,8 +118,8 @@ class Oscilloscope extends PureComponent {
         const inputDataGenerator1 = channel1.inputDataGenerator;
         const inputDataGenerator2 = channel2.inputDataGenerator;
 
-        const nextData1 = inputDataGenerator1.next().value + channel1VerticalOffset;
-        const nextData2 = inputDataGenerator2.next().value + channel2VerticalOffset;
+        const nextData1 = inputDataGenerator1.next().value*channel1Scale + channel1VerticalOffset;
+        const nextData2 = inputDataGenerator2.next().value*channel2Scale + channel2VerticalOffset;
 
         let newChannel1Data = [];
         let newChannel2Data = [];
@@ -157,7 +161,19 @@ class Oscilloscope extends PureComponent {
         const { channel2VerticalOffset: oldChannel2VerticalOffset, channel2Data } = this.state;
         const newChannel2Data = channel2Data.map(pointValue => pointValue - oldChannel2VerticalOffset + channel2VerticalOffset);
         this.setState({channel2VerticalOffset, channel2Data: newChannel2Data});
-    }
+    };
+
+    channel1ScaleChanged = (channel1Scale) => {
+        const { channel1Scale: oldChannel1Scale, channel1Data } = this.state;
+        const newChannel1Data = channel1Data.map(pointValue => (pointValue/oldChannel1Scale)*channel1Scale);
+        this.setState({channel1Scale, channel1Data: newChannel1Data});
+    };
+
+    channel2ScaleChanged = (channel2Scale) => {
+        const { channel2Scale: oldChannel2Scale, channel2Data } = this.state;
+        const newChannel2Data = channel2Data.map(pointValue => (pointValue/oldChannel2Scale)*channel2Scale);
+        this.setState({channel2Scale, channel2Data: newChannel2Data});
+    };
 }
 
 export default Oscilloscope;

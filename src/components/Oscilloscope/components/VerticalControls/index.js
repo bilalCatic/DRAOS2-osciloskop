@@ -8,6 +8,11 @@ const verticalOffsetKnobOptions = {
     max: 5,
 };
 
+const scaleKnobOptions = {
+    min: 0.2,
+    max: 5,
+};
+
 class VerticalControls extends PureComponent {
     constructor(props){
         super(props);
@@ -18,6 +23,8 @@ class VerticalControls extends PureComponent {
             channel2Active: true,
             channel1VerticalOffset: 0,
             channel2VerticalOffset: 0,
+            channel1Scale: 1,
+            channel2Scale: 1
         }
     }
 
@@ -27,7 +34,9 @@ class VerticalControls extends PureComponent {
             channel1Active,
             channel2Active,
             channel1VerticalOffset,
-            channel2VerticalOffset
+            channel2VerticalOffset,
+            channel1Scale,
+            channel2Scale
         } = this.state;
 
         const knobStyle = {
@@ -54,11 +63,25 @@ class VerticalControls extends PureComponent {
                         <Grid.Row>
                             <Grid.Column width={8}>
                                 V/div
-                                <Knob style={knobStyle} skin={s17}/>
+                                <Knob
+                                    style={knobStyle}
+                                    skin={s17}
+                                    min={scaleKnobOptions.min}
+                                    max={scaleKnobOptions.max}
+                                    value={channel1Scale}
+                                    onChange={this.changeChannel1Scale}
+                                />
                             </Grid.Column>
                             <Grid.Column width={8}>
                                 V/div
-                                <Knob style={knobStyle} skin={s17}/>
+                                <Knob
+                                    style={knobStyle}
+                                    skin={s17}
+                                    min={scaleKnobOptions.min}
+                                    max={scaleKnobOptions.max}
+                                    value={channel2Scale}
+                                    onChange={this.changeChannel2Scale}
+                                />
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -131,6 +154,16 @@ class VerticalControls extends PureComponent {
     changeChannel2VerticalOffset = (channel2VerticalOffset) => {
         this.setState({channel2VerticalOffset});
         this.props.onChannel2VerticalOffsetChange(channel2VerticalOffset);
+    };
+
+    changeChannel1Scale = (channel1Scale) => {
+        this.setState({channel1Scale});
+        this.props.onChannel1ScaleChange(channel1Scale);
+    };
+
+    changeChannel2Scale = (channel2Scale) => {
+        this.setState({channel2Scale});
+        this.props.onChannel2ScaleChange(channel2Scale);
     };
 }
 
