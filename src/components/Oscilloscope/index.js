@@ -38,6 +38,8 @@ class Oscilloscope extends PureComponent {
     }
 
     componentDidMount() {
+        this.setupInitialValues();
+
         const intervalHandler = window.setInterval(this.shiftChannelValues.bind(this), REFRESH_INTERVAL);
         this.setState({intervalHandler});
     }
@@ -131,6 +133,37 @@ class Oscilloscope extends PureComponent {
         }
         if (nextData2 !== undefined && !isNaN(nextData2)){
             newChannel2Data = [...channel2Data.slice(1), nextData2];
+        }
+
+        this.setState({channel1Data: newChannel1Data, channel2Data: newChannel2Data});
+    }
+
+    setupInitialValues() {
+        const {
+            channel1,
+            channel2,
+            channel1VerticalOffset,
+            channel2VerticalOffset,
+            channel1Scale,
+            channel2Scale
+        } = this.state;
+
+        const inputDataGenerator1 = channel1.inputDataGenerator;
+        const inputDataGenerator2 = channel2.inputDataGenerator;
+
+        let newChannel1Data = [];
+        let newChannel2Data = [];
+
+        for(let i = 0; i < WINDOW_SIZE; i++){
+            const nextData1 = inputDataGenerator1.next().value*channel1Scale + channel1VerticalOffset;
+            const nextData2 = inputDataGenerator2.next().value*channel2Scale + channel2VerticalOffset;
+
+            if (nextData1 !== undefined && !isNaN(nextData1)){
+                newChannel1Data.push(nextData1);
+            }
+            if (nextData2 !== undefined && !isNaN(nextData2)){
+                newChannel2Data.push(nextData2);
+            }
         }
 
         this.setState({channel1Data: newChannel1Data, channel2Data: newChannel2Data});
