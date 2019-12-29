@@ -30,11 +30,7 @@ class Screen extends PureComponent {
                 chart: {
                     id: 'realtime',
                     animations: {
-                        enabled: true,
-                        easing: 'linear',
-                        dynamicAnimation: {
-                            speed: 1000
-                        }
+                        enabled: false,
                     },
                     toolbar: {
                         show: false
@@ -82,11 +78,14 @@ class Screen extends PureComponent {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const { channel1Data: data1, channel2Data: data2, timeOffset } = this.props;
 
+        const data1IsArray = Array.isArray(data1);
+        const data2IsArray = Array.isArray(data2);
+
         const seriesData = [];
-        if (Array.isArray(data1)){
+        if (data1IsArray){
             seriesData.push({data: data1});
         }
-        if (Array.isArray(data2)){
+        if (data2IsArray){
             seriesData.push({data: data2});
         }
 
@@ -95,10 +94,29 @@ class Screen extends PureComponent {
         const chartOptions = this.state.options;
         chartOptions.xaxis.min = DEFAULT_X_MIN - timeOffset;
         chartOptions.xaxis.max = DEFAULT_X_MAX - timeOffset;
+
+        const COLORS_ONLY_CHANNEL1 = ['#008FFB'];
+        const COLORS_ONLY_CHANNEL2 = ['#00E396'];
+        const COLORS_BOTH_CHANNELS = ['#008FFB', '#00E396'];
+
+        if (data1IsArray && !data2IsArray){
+            console.log('Only #1');
+            chartOptions.colors = COLORS_ONLY_CHANNEL1;
+        }
+        if (data2IsArray && !data1IsArray){
+            console.log('Only #2');
+            chartOptions.colors = COLORS_ONLY_CHANNEL2;
+        }
+        if (data1IsArray && data2IsArray){
+            console.log('Both');
+            chartOptions.colors = COLORS_BOTH_CHANNELS;
+        }
+
         this.setState({options: chartOptions});
     }
 
     render() {
+        console.log('Render Colors : ', this.state.options.colors);
         return (
             <div id="chart">
                 <ReactApexChart options={this.state.options} series={[]} type="line" height="350" />
