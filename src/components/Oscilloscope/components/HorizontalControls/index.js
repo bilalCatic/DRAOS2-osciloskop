@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import {Accordion, Grid, Icon, Button} from "semantic-ui-react";
 import {Knob} from "react-rotary-knob";
-import {s17} from "react-rotary-knob-skin-pack";
+import {s16} from "react-rotary-knob-skin-pack";
 
 const timeKnobOptions = {
     min: 0.1,
@@ -58,7 +58,7 @@ class HorizontalControls extends PureComponent {
                                 Time
                                 <Knob
                                     style={knobStyle}
-                                    skin={s17}
+                                    skin={s16}
                                     onChange={this.changeTimeScale}
                                     min={timeKnobOptions.min}
                                     max={timeKnobOptions.max}
@@ -71,7 +71,7 @@ class HorizontalControls extends PureComponent {
                                 Position
                                 <Knob
                                     style={knobStyleSmall}
-                                    skin={s17}
+                                    skin={s16}
                                     min={timeOffsetKnobOptions.min}
                                     max={timeOffsetKnobOptions.max}
                                     value={timeOffset}

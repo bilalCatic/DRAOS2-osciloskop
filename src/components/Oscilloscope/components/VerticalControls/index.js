@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import {Accordion, Icon, Grid, Button} from "semantic-ui-react";
 import { Knob } from "react-rotary-knob";
-import { s17 } from "react-rotary-knob-skin-pack";
+import { s16 } from "react-rotary-knob-skin-pack";
 
 const verticalOffsetKnobOptions = {
     min: -5,
@@ -65,7 +65,7 @@ class VerticalControls extends PureComponent {
                                 V/div
                                 <Knob
                                     style={knobStyle}
-                                    skin={s17}
+                                    skin={s16}
                                     min={scaleKnobOptions.min}
                                     max={scaleKnobOptions.max}
                                     value={channel1Scale}
@@ -76,7 +76,7 @@ class VerticalControls extends PureComponent {
                                 V/div
                                 <Knob
                                     style={knobStyle}
-                                    skin={s17}
+                                    skin={s16}
                                     min={scaleKnobOptions.min}
                                     max={scaleKnobOptions.max}
                                     value={channel2Scale}
@@ -101,7 +101,7 @@ class VerticalControls extends PureComponent {
                                 Position
                                 <Knob
                                     style={knobStyleSmall}
-                                    skin={s17}
+                                    skin={s16}
                                     min={verticalOffsetKnobOptions.min}
                                     max={verticalOffsetKnobOptions.max}
                                     value={channel1VerticalOffset}
@@ -112,7 +112,7 @@ class VerticalControls extends PureComponent {
                                 Position
                                 <Knob
                                     style={knobStyleSmall}
-                                    skin={s17}
+                                    skin={s16}
                                     min={verticalOffsetKnobOptions.min}
                                     max={verticalOffsetKnobOptions.max}
                                     value={channel2VerticalOffset}
